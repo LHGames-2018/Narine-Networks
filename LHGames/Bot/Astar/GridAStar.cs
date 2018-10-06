@@ -35,7 +35,7 @@ namespace AStar
 
             GridWorld world = new GridWorld(map, collisions, this);
             GridState initialState = new GridState(startPosition, this);
-            //Console.WriteLine(initialState.ToString());
+            Console.WriteLine(initialState.ToString());
             
             GridGoal goal = new GridGoal(endPosition);
 
@@ -116,7 +116,7 @@ namespace AStar
 
         bool InBound(Vector2 position)
         {
-            return position.x > 0 && position.y > 0 && position.x < gridAStar.width && position.y < gridAStar.heigth;
+            return position.x >= 0 && position.y >= 0 && position.x < gridAStar.width && position.y < gridAStar.heigth;
         }
     }
 
