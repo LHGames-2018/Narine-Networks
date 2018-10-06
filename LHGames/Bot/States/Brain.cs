@@ -38,6 +38,10 @@ namespace LHGames.Helper
             miningState.Init(this);
             upgradeState.Init(this);
             exploreState.Init(this);
+            combatState.Init(this);
+            returnHomeState.Init(this);
+            stealthState.Init(this);
+
 
             currentState = miningState;
             upgradeLevels = new Dictionary<int, int>() { { 1, 10000 }, { 2, 15000 }, { 3, 25000 }, { 4, 50000 }, { 5, 100000 }, { 6, int.MaxValue } };
