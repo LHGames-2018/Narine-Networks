@@ -49,7 +49,7 @@ namespace LHGames.Helper
 
             if(CanUpgrade())
             {
-                currentState = upgradeState;
+                SetNewState(upgradeState);
             }
             else
             {
@@ -124,6 +124,7 @@ namespace LHGames.Helper
 
             if (CheckIfLastState())
             {
+                CheckBestState();
                 return;
             }
 
