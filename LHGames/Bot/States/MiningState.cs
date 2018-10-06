@@ -33,7 +33,8 @@ internal class MiningState : State
         else
         {
 
-            return ReturnHome();
+            ExitCurrentState();
+            return AIHelper.CreateEmptyAction();
         }
     }
 

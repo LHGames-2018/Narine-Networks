@@ -27,7 +27,8 @@ internal class StealthState : State
         }
         else
         {
-            return ReturnHome();
+            ExitCurrentState();
+            return AIHelper.CreateEmptyAction();
         }
     }
 
