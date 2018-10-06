@@ -302,7 +302,10 @@ namespace LHGames.Helper
             {
                 return location[index].Position;
             }
-            return null;
+            int rndMov = new Random().Next(-1, 2);
+            int rndMov2 = new Random().Next(-1, 2);
+
+            return new Point(playerInfo.Position.X + rndMov, playerInfo.Position.Y + rndMov2);
         }
     }
 }
