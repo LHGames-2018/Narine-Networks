@@ -18,6 +18,7 @@ internal class MiningState : State
 
     public override void StartStates()
     {
+        
     }
 
     protected override string UpdateState()
