@@ -135,9 +135,7 @@ namespace LHGames.Helper
             char[,] charMap = MapToCharArray(size);
             char[] collisions = { 'w' };
 
-            Console.WriteLine(charMap[end.x, end.y]);
 
-            //List<Vector2> directions = astar.FindPath(new Vector2(start.y, start.x), new Vector2(end.y, end.x), charMap, collisions);
             List<Vector2> directions = astar.FindPath(start, end, charMap, collisions);
 
             return directions;
@@ -219,16 +217,33 @@ namespace LHGames.Helper
                     location.Add(currentTile);
             }
 
+            List<List<Vector2>> ListOfPaths = new List<List<Vector2>>();
             for (int i = 0; i < location.Count; i++)
             {
                 //Point point = GlobalToLocalPoint(location[i].Position);
                 List <Vector2> directions = FindPath(location[i].Position);
-                if (directions != null)
-                {
-                    return location[i].Position;
-                }
+                ListOfPaths.Add(directions);
             }
 
+            int index = -1;
+            int minDistance = 10000;
+            for (int i = 0; i < ListOfPaths.Count; i++)
+            {
+                //Path null
+                if (ListOfPaths[i] == null)
+                    continue;
+
+                if(ListOfPaths[i].Count < minDistance)
+                {
+                    index = i; ;
+                    minDistance = ListOfPaths[i].Count;
+                }
+            }
+        
+            if (index != -1)
+            {
+                return location[index].Position;
+            }
             return new Point(0, 0);
         }
     }
