@@ -11,12 +11,15 @@ namespace LHGames.Helper
         State savedLastState;
 
         MiningState miningState = new MiningState();
+        UpgradeState upgradeState = new UpgradeState();
 
         public IEnumerable<IPlayer> visiblePlayers;
         public IPlayer playerInfo;
         public Map map;
 
         int size;
+        Dictionary<int, int> upgradeLevels;
+        Dictionary<UpgradeType, int> currentUpgrade;
 
         AStar.GridAStar astar = new AStar.GridAStar(false);
         GameInfo gameInfo;
@@ -27,6 +30,8 @@ namespace LHGames.Helper
             miningState.Init(this);
 
             currentState = miningState;
+            upgradeLevels = new Dictionary<int, int>() { { 1, 10000 }, { 2, 15000 }, { 3, 25000 }, { 4, 50000 }, { 5, 100000 } };
+            currentUpgrade = new Dictionary<UpgradeType, int>() { { UpgradeType.AttackPower, 0 }, { UpgradeType.CarryingCapacity, 0 }, { UpgradeType.CollectingSpeed, 0 }, { UpgradeType.Defence, 0 }, { UpgradeType.MaximumHealth, 0 } };
         }
 
         public string UpdateState(IPlayer playerInfo, Map map, IEnumerable<IPlayer> visiblePlayers)
@@ -36,12 +41,29 @@ namespace LHGames.Helper
             this.map = map;
             size = map.VisibleDistance * 2;
 
-
-            Point position = FindPositionOfTile(TileContent.Resource, size);
-            miningState.SetMineral(position);
-
+            if(CanUpgrade())
+            {
+                currentState = upgradeState;
+            }
+            else
+            {
+                Point position = FindPositionOfTile(TileContent.Resource, size);
+                miningState.SetMineral(position);
+            }
 
             return currentState.Update();
+        }
+
+        public bool CanUpgrade()
+        {
+            if (playerInfo.TotalResources >= upgradeLevels[currentUpgrade[UpgradeType.CollectingSpeed]])
+                return true;
+            return false;
+        }
+
+        public void UpgradeGear(UpgradeType type)
+        {
+            currentUpgrade[type]++;
         }
 
         public void ExitCurrentState(State state)
