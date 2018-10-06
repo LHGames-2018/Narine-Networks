@@ -6,7 +6,7 @@ using LHGames.Bot;
 using LHGames.Helper;
 
 
-public class MiningState : State
+internal class MiningState : State
 {
 
     Point miniralPosition;
