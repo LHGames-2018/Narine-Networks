@@ -156,7 +156,7 @@ namespace LHGames.Helper
             Vector2 end = GlobalToLocal(destination);
 
             char[,] charMap = MapToCharArray(size);
-            char[] collisions = { 'w', 'l' };
+            char[] collisions = { 'w', 'l', 'm'  };
 
             charMap[end.x, end.y] = '@';
 
