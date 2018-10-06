@@ -11,6 +11,8 @@ namespace LHGames.Helper
         State savedLastState;
 
         MiningState miningState = new MiningState();
+        CombatState combatState = new CombatState();
+        StealthState stealthState = new StealthState();
 
         public IEnumerable<IPlayer> visiblePlayers;
         public IPlayer playerInfo;
@@ -46,6 +48,20 @@ namespace LHGames.Helper
 
         public void ExitCurrentState(State state)
         {
+            if (currentState != null)
+            {
+                savedLastState = currentState;
+            }
+
+            
+        }
+
+        void CheckBestState()
+        {
+            if(playerInfo.CarriedResources == playerInfo.CarryingCapacity)
+            {
+                
+            }
         }
 
         public void SetNewState(State states)
