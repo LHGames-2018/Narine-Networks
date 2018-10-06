@@ -8,7 +8,7 @@ internal class ReturnHomeState : State
 {
     public override void StartStates()
     {
-        throw new NotImplementedException();
+        
     }
 
     protected override string UpdateState()
