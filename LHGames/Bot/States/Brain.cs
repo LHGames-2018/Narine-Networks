@@ -156,9 +156,9 @@ namespace LHGames.Helper
             Vector2 end = GlobalToLocal(destination);
 
             char[,] charMap = MapToCharArray(size);
-            char[] collisions = { 'w', 'l', 'm'  };
+            char[] collisions = { 'w', 'l', 'm'};
 
-            charMap[end.x, end.y] = '@';
+            charMap[end.y, end.x] = '@';
 
             List<Vector2> directions = astar.FindPath(start, end, charMap, collisions);
 
