@@ -116,7 +116,7 @@ namespace AStar
 
         bool InBound(Vector2 position)
         {
-            return position.x > 0 && position.y > 0 && position.x < gridAStar.width && position.y < gridAStar.heigth;
+            return position.x >= 0 && position.y >= 0 && position.x < gridAStar.width && position.y < gridAStar.heigth;
         }
     }
 

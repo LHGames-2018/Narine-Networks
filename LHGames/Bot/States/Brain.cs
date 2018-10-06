@@ -290,7 +290,7 @@ namespace LHGames.Helper
             {
                 return location[index].Position;
             }
-            return new Point(0, 0);
+            return null;
         }
     }
 }
