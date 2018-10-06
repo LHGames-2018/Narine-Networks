@@ -60,7 +60,8 @@ namespace LHGames.Helper
             char[,] charMap = MapToCharArray(size);
             PrintMap(charMap, false);
             Console.WriteLine(playerInfo.TotalResources);
-            //return exploreState.Update();
+            //return exploreState.Update
+            return HardcodedRun();
 
             if (CanUpgrade())
             {
@@ -72,6 +73,19 @@ namespace LHGames.Helper
             }
 
             return currentState.Update();
+        }
+
+        string HardcodedRun()
+        {
+            HardCoded.currentHardCodedValue++;
+            if (HardCoded.currentHardCodedValue-1 < HardCoded.roadToVictory.Length)
+            {
+                return AIHelper.CreateMoveAction(new Point(HardCoded.roadToVictory[HardCoded.currentHardCodedValue-1, 0], HardCoded.roadToVictory[HardCoded.currentHardCodedValue-1, 1]));
+            }
+            else
+            {
+               return AIHelper.CreateMeleeAttackAction(new Point(HardCoded.attackValue[0,0]));
+            }
         }
 
         public bool CanUpgrade()
@@ -218,7 +232,7 @@ namespace LHGames.Helper
             {
                 for (int x = 0; x < size; x++)
                 {
-                    Console.Write(map[x, y] + ((debug) ? "(" + x + "/" + y + ")" : ""));
+                    Console.Write(map[y, x] + ((debug) ? "(" + x + "/" + y + ")" : ""));
                 }
                 Console.Write("\n");
 
