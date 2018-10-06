@@ -60,8 +60,6 @@ namespace LHGames.Helper
             char[,] charMap = MapToCharArray(size);
             PrintMap(charMap, false);
             Console.WriteLine(playerInfo.TotalResources);
-            //return exploreState.Update
-            return HardcodedRun();
 
             if (CanUpgrade())
             {
