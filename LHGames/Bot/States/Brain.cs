@@ -19,6 +19,7 @@ namespace LHGames.Helper
         public Map map;
 
         int size;
+        bool isExitingStates;
 
         AStar.GridAStar astar = new AStar.GridAStar(false);
         GameInfo gameInfo;
@@ -37,17 +38,27 @@ namespace LHGames.Helper
             this.visiblePlayers = visiblePlayers;
             this.map = map;
             size = map.VisibleDistance * 2;
-
+            isExitingStates = false;
 
             Point position = FindPositionOfTile(TileContent.Resource, size);
             miningState.SetMineral(position);
 
+            string output = currentState.Update();
+            int debug = 5;
+            while (isExitingStates && debug > 0)
+            {
+                debug--;
+                //Set new state
+                isExitingStates = false;
+                output = currentState.Update();
+            }
 
-            return currentState.Update();
+            return output;
         }
 
         public void ExitCurrentState(State state)
         {
+            isExitingStates = true;
             if (currentState != null)
             {
                 savedLastState = currentState;
@@ -80,11 +91,6 @@ namespace LHGames.Helper
             currentState.StartStates();
         }
 
-        public string GenerateAction()
-        {
-            return "Halo 3 gros bb";
-        }
-
         bool CheckIfLastState()
         {
             if (currentState == savedLastState)
@@ -111,8 +117,9 @@ namespace LHGames.Helper
             Vector2 end = GlobalToLocal(destination);
 
             char[,] charMap = MapToCharArray(size);
-            char[] collisions = { 'w' };
+            char[] collisions = { 'w', 'l' };
 
+            charMap[end.x, end.y] = '@';
 
             List<Vector2> directions = astar.FindPath(start, end, charMap, collisions);
 
