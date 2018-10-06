@@ -22,6 +22,8 @@ internal class MiningState : State
 
     protected override string UpdateState()
     {
+        Console.WriteLine("Mining State");
+
         //Pas full
         Console.WriteLine(brain.playerInfo.CarriedResources + "/" + brain.playerInfo.CarryingCapacity);
         if (brain.playerInfo.CarriedResources < brain.playerInfo.CarryingCapacity)

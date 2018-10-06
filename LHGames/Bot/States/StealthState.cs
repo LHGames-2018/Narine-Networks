@@ -20,6 +20,7 @@ internal class StealthState : State
 
     protected override string UpdateState()
     {
+        Console.WriteLine("Steal");
         if(brain.playerInfo.CarriedResources < brain.playerInfo.CarryingCapacity)
         {
             return StealthRessource();

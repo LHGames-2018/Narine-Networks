@@ -15,6 +15,7 @@ namespace LHGames.Helper
         CombatState combatState = new CombatState();
         StealthState stealthState = new StealthState();
         ReturnHomeState returnHomeState = new ReturnHomeState();
+        ExploreState exploreState = new ExploreState();
 
         public IEnumerable<IPlayer> visiblePlayers;
         public IPlayer playerInfo;
@@ -36,6 +37,7 @@ namespace LHGames.Helper
             //init all states
             miningState.Init(this);
             upgradeState.Init(this);
+            exploreState.Init(this);
 
             currentState = miningState;
             upgradeLevels = new Dictionary<int, int>() { { 1, 10000 }, { 2, 15000 }, { 3, 25000 }, { 4, 50000 }, { 5, 100000 }, { 6, int.MaxValue } };
@@ -53,6 +55,8 @@ namespace LHGames.Helper
 
             char[,] charMap = MapToCharArray(size);
             PrintMap(charMap, false);
+            Console.WriteLine(playerInfo.TotalResources);
+            //return exploreState.Update();
 
             if (CanUpgrade())
             {
@@ -60,8 +64,7 @@ namespace LHGames.Helper
             }
             else
             {
-                Point position = FindPositionOfTile(TileContent.Resource, size);
-                miningState.SetMineral(position);
+                CheckBestState();
             }
 
             return currentState.Update();
@@ -95,8 +98,7 @@ namespace LHGames.Helper
             {
                 savedLastState = currentState;
             }
-
-            CheckBestState();
+            
         }
 
         void CheckBestState()
@@ -106,12 +108,12 @@ namespace LHGames.Helper
                 SetNewState(returnHomeState);
                 return;
             }
-            if (ToList(visiblePlayers).Count > 0 && playerInfo.TotalResources < GetMostRessourcePlayer().TotalResources)
-            {
-                stealthState.SetStealthDestination(GetMostRessourcePlayer().HouseLocation);
-                SetNewState(stealthState);
-                return;
-            }
+            //if (ToList(visiblePlayers).Count > 0 && playerInfo.TotalResources < GetMostRessourcePlayer().TotalResources)
+            //{
+            //    stealthState.SetStealthDestination(GetMostRessourcePlayer().HouseLocation);
+            //    SetNewState(stealthState);
+            //    return;
+            //}
 
             Point position = FindPositionOfTile(TileContent.Resource, size);
             miningState.SetMineral(position);
@@ -142,14 +144,7 @@ namespace LHGames.Helper
             {
                 savedLastState = currentState;
             }
-            currentState = states;
-
-            if (CheckIfLastState())
-            {
-                CheckBestState();
-                return;
-            }
-            
+            currentState = states;            
             currentState.StartStates();
         }
 

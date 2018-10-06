@@ -20,11 +20,16 @@ internal class UpgradeState : State
 
     protected override string UpdateState()
     {
+        Console.WriteLine("Upgrade");
+
+
         int collectingLevel = brain.playerInfo.GetUpgradeLevel(UpgradeType.CollectingSpeed);
         if (brain.playerInfo.Position == brain.playerInfo.HouseLocation && collectingLevel != 5)
         {
             brain.UpgradeGear(UpgradeType.CollectingSpeed);
             ExitCurrentState();
+            Console.WriteLine("Buying");
+
             return AIHelper.CreateUpgradeAction(UpgradeType.CollectingSpeed);
         }
         return GoTo(brain.playerInfo.HouseLocation);

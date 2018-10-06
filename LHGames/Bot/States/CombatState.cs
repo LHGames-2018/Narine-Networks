@@ -24,7 +24,9 @@ internal class CombatState : State
 
     protected override string UpdateState()
     {
-        if(targetPlayer.Health > 0)
+        Console.WriteLine("Combat");
+
+        if (targetPlayer.Health > 0)
         {
             return AttackPlayer();
         }

@@ -8,12 +8,14 @@ internal class ReturnHomeState : State
 {
     public override void StartStates()
     {
-        throw new NotImplementedException();
+        
     }
 
     protected override string UpdateState()
     {
-        if(brain.playerInfo.Position != brain.playerInfo.HouseLocation)
+        Console.WriteLine("Return Home");
+
+        if (brain.playerInfo.Position != brain.playerInfo.HouseLocation)
         {
             return brain.GetDirection(brain.playerInfo.HouseLocation);
         }
