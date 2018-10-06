@@ -197,10 +197,10 @@ namespace LHGames.Helper
             if(Math.Abs(start.x - end.x) > 10 || Math.Abs(start.y - end.y) > 10)
             {
                 int multiplierX = (start.x - end.x) > 0 ? -1 : 1;
-                end.x = start.x + (19 * multiplierX);
+                end.x = start.x + (9 * multiplierX);
 
                 int multiplierY = (start.y - end.y) > 0 ? -1 : 1;
-                end.y = start.y + (19 * multiplierY);
+                end.y = start.y + (9 * multiplierY);
             }
 
             char[,] charMap = MapToCharArray(size);
