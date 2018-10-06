@@ -143,8 +143,6 @@ namespace LHGames.Helper
 
         Point FindPositionOfTile(TileContent tile, int size)
         {
-            IList<Tile> tileList = (IList<Tile>)map.GetVisibleTiles();
-
             foreach (Tile currentTile in map.GetVisibleTiles())
             { 
                 if (currentTile.TileType == tile)
