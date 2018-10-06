@@ -31,7 +31,7 @@ internal class CombatState : State
         else
         {
             ExitCurrentState();
-            return "";
+            return AIHelper.CreateEmptyAction();
         }
     }
 

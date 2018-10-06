@@ -18,7 +18,7 @@ internal class ReturnHomeState : State
             return brain.GetDirection(brain.playerInfo.HouseLocation);
         }
         ExitCurrentState();
-        return "";
+        return AIHelper.CreateEmptyAction();
     }
 }
 
