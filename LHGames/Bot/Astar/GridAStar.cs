@@ -35,7 +35,7 @@ namespace AStar
 
             GridWorld world = new GridWorld(map, collisions, this);
             GridState initialState = new GridState(startPosition, this);
-            //Console.WriteLine(initialState.ToString());
+            Console.WriteLine(initialState.ToString());
             
             GridGoal goal = new GridGoal(endPosition);
 

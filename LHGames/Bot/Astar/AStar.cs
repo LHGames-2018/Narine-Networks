@@ -14,7 +14,7 @@ class AStarGenerator
         {
             heuristic.InitialiseGoal(goal);
 
-            SortedSet<State> open = new SortedSet<State>();
+            List<State> open = new List<State>();
             HashSet<State> open2 = new HashSet<State>();
             HashSet<State> close = new HashSet<State>();
 
@@ -22,7 +22,7 @@ class AStarGenerator
 
             open.Add(currentState);
             open2.Add(currentState);
-
+            int statesCount = 0;
             bool foundSolution = false;
 
             while(open.Count > 0)
@@ -36,7 +36,7 @@ class AStarGenerator
                 open2.Remove(currentState);
                 close.Add(currentState);
 
-
+                statesCount++;
 
                 if (goal.GoalSatisfied(currentState))
                 {
@@ -51,6 +51,8 @@ class AStarGenerator
                 VisitNextStates(heuristic, open, open2, close, currentState, nextStates, nextOperations);
             }
 
+
+            
             if (foundSolution)
             {
                 return GetActionsFromParent(currentState);
@@ -61,7 +63,7 @@ class AStarGenerator
             }
         }
 
-        private static void VisitNextStates(Heuristic heuristic, SortedSet<State> open, HashSet<State> open2, HashSet<State> close, State currentState, List<State> nextStates, List<Operation> nextActions)
+        private static void VisitNextStates(Heuristic heuristic, List<State> open, HashSet<State> open2, HashSet<State> close, State currentState, List<State> nextStates, List<Operation> nextActions)
         {
             for (int i = 0; i < nextStates.Count; i++)
             {
@@ -75,15 +77,15 @@ class AStarGenerator
                     {
                         //Si existe deja, update les stats
 
-                        double newg = currentState.g + nextAction.cost;
-                        double newf = newg + heuristic.EstimateCost(nextState);
-                        if (newf < nextState.f)
-                        {
-                            open.Remove(nextState);
-                            nextState.g = newg;
-                            nextState.f = newf;
-                            open.Add(nextState);
-                        }
+                        //double newg = currentState.g + nextAction.cost;
+                        //double newf = newg + heuristic.EstimateCost(nextState);
+                        //if (newf < nextState.f)
+                        //{
+                        //    open.Remove(nextState);
+                        //    nextState.g = newg;
+                        //    nextState.f = newf;
+                        //    open.Add(nextState);
+                        //}
                     }
                     else
                     {

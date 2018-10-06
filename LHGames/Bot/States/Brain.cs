@@ -26,7 +26,7 @@ namespace LHGames.Helper
         Dictionary<int, int> upgradeLevels;
         Dictionary<UpgradeType, int> currentUpgrade;
 
-        AStar.GridAStar astar = new AStar.GridAStar(false);
+        AStar.GridAStar astar = new AStar.GridAStar(true);
         GameInfo gameInfo;
 
         char[,] charMap; //= MapToCharArray(size);
@@ -122,7 +122,10 @@ namespace LHGames.Helper
             Point position = FindPositionOfTile(TileContent.Resource, size);
             miningState.SetMineral(position);
 
-            SetNewState(miningState);
+            if (position == null)
+                SetNewState(returnHomeState);
+            else
+                SetNewState(miningState);
         }
 
         IPlayer GetMostRessourcePlayer()
