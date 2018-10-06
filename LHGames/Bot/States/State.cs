@@ -51,5 +51,13 @@ namespace LHGames.Helper
         {
             return new Point((to.X - from.X), (to.Y - from.Y));
         }
+
+        protected bool IsOutOfMap(Point point)
+        {
+            int x = point.X;
+            int y = point.Y;
+
+            return x < brain.map.XMin || x > brain.map.XMax || y < brain.map.YMin || y > brain.map.YMax;
+        }
     }
 }
