@@ -46,8 +46,9 @@ namespace LHGames.Helper
             this.map = map;
             size = map.VisibleDistance * 2 + 1;
             isExitingStates = false;
+            UpdateUpgrades();
 
-            if(CanUpgrade())
+            if (CanUpgrade())
             {
                 SetNewState(upgradeState);
             }
@@ -65,6 +66,15 @@ namespace LHGames.Helper
             if (playerInfo.TotalResources >= upgradeLevels[currentUpgrade[UpgradeType.CollectingSpeed] + 1])
                 return true;
             return false;
+        }
+
+        private void UpdateUpgrades()
+        {
+            currentUpgrade[UpgradeType.AttackPower] = playerInfo.GetUpgradeLevel(UpgradeType.AttackPower);
+            currentUpgrade[UpgradeType.CarryingCapacity] = playerInfo.GetUpgradeLevel(UpgradeType.CarryingCapacity);
+            currentUpgrade[UpgradeType.CollectingSpeed] = playerInfo.GetUpgradeLevel(UpgradeType.CollectingSpeed);
+            currentUpgrade[UpgradeType.Defence] = playerInfo.GetUpgradeLevel(UpgradeType.Defence);
+            currentUpgrade[UpgradeType.MaximumHealth] = playerInfo.GetUpgradeLevel(UpgradeType.MaximumHealth);
         }
 
         public void UpgradeGear(UpgradeType type)
@@ -90,7 +100,7 @@ namespace LHGames.Helper
                 SetNewState(returnHomeState);
                 return;
             }
-            if (playerInfo.TotalResources < GetMostRessourcePlayer().TotalResources)
+            if (ToList(visiblePlayers).Count > 0 && playerInfo.TotalResources < GetMostRessourcePlayer().TotalResources)
             {
                 stealthState.SetStealthDestination(GetMostRessourcePlayer().HouseLocation);
                 SetNewState(stealthState);
@@ -121,14 +131,14 @@ namespace LHGames.Helper
             {
                 savedLastState = currentState;
             }
+            currentState = states;
 
             if (CheckIfLastState())
             {
                 CheckBestState();
                 return;
             }
-
-            currentState = states;
+            
             currentState.StartStates();
         }
 
