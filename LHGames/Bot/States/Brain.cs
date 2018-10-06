@@ -16,6 +16,7 @@ namespace LHGames.Helper
         public IPlayer playerInfo;
         public Map map;
 
+        int size;
 
         AStar.GridAStar astar = new AStar.GridAStar(false);
         GameInfo gameInfo;
@@ -33,6 +34,10 @@ namespace LHGames.Helper
             this.playerInfo = playerInfo;
             this.visiblePlayers = visiblePlayers;
             this.map = map;
+            size = map.VisibleDistance;
+
+            miningState.SetMineral(FindPositionOfTile(TileContent.Resource, size));
+
 
             return currentState.Update();
         }
@@ -83,8 +88,7 @@ namespace LHGames.Helper
 
         public List<Vector2> FindPath(Point destination)
         {
-            int size = map.VisibleDistance;
-            Vector2 start = new Vector2(map.VisibleDistance / 2, map.VisibleDistance / 2);
+            Vector2 start = new Vector2(size / 2, size / 2);
             Vector2 end = new Vector2(destination);
 
             char[,] charMap = MapToCharArray(size);
@@ -136,5 +140,17 @@ namespace LHGames.Helper
             return ' ';
         }
 
+
+        Point FindPositionOfTile(TileContent tile, int size)
+        {
+            IList<Tile> tileList = (IList<Tile>)map.GetVisibleTiles();
+
+            foreach (Tile currentTile in map.GetVisibleTiles())
+            { 
+                if (currentTile.TileType == tile)
+                    return currentTile.Position;
+            }
+            return new Point(0, 0);
+        }
     }
 }

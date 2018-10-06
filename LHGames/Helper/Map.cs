@@ -8,7 +8,7 @@ namespace LHGames.Helper
     /// This class represents the GameMap.
     /// DO NOT MODIFY FUNCTIONS FROM THIS CLASS.
     /// </summary>
-    internal class Map
+    public class Map
     {
         private Tile[,] Tiles { get; set; }
         private int XMin { get; set; }
@@ -46,7 +46,7 @@ namespace LHGames.Helper
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
         /// <returns>The content of the tile.</returns>
-        internal TileContent GetTileAt(int x, int y)
+        public TileContent GetTileAt(int x, int y)
         {
             if (x < XMin || x > XMax || y < YMin || y > YMax)
             {

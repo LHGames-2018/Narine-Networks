@@ -9,11 +9,15 @@ using LHGames.Helper;
 internal class MiningState : State
 {
 
-    Point miniralPosition;
+    Point miningDestination;
+
+    public void SetMineral(Point miningDestination)
+    {
+        this.miningDestination = miningDestination;
+    }
 
     public override void StartStates()
     {
-
     }
 
     protected override string UpdateState()
@@ -31,13 +35,13 @@ internal class MiningState : State
 
     string GatherRessource()
     {
-        if(Adjacent(miniralPosition))
+        if(Adjacent(miningDestination))
         {
-            return AIHelper.CreateCollectAction(miniralPosition);
+            return AIHelper.CreateCollectAction(miningDestination);
         }
         else
         {
-            return GoTo(miniralPosition);
+            return GoTo(miningDestination);
         }
     }
 
