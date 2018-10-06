@@ -91,6 +91,7 @@ namespace LHGames.Helper
             }
             if (playerInfo.TotalResources < GetMostRessourcePlayer().TotalResources)
             {
+                stealthState.SetStealthDestination(GetMostRessourcePlayer().HouseLocation);
                 SetNewState(stealthState);
                 return;
             }
