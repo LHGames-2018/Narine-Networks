@@ -34,9 +34,11 @@ namespace LHGames.Helper
             this.playerInfo = playerInfo;
             this.visiblePlayers = visiblePlayers;
             this.map = map;
-            size = map.VisibleDistance;
+            size = map.VisibleDistance * 2;
 
-            miningState.SetMineral(FindPositionOfTile(TileContent.Resource, size));
+
+            Point position = FindPositionOfTile(TileContent.Resource, size);
+            miningState.SetMineral(position);
 
 
             return currentState.Update();
@@ -82,20 +84,30 @@ namespace LHGames.Helper
             List<Vector2> directions = FindPath(destination);
             //null check
 
+            Console.WriteLine("Direction count " + directions.Count);
             Point point = new Point(directions[0].x, directions[0].y);
             return AIHelper.CreateMoveAction(point);
         }
 
         public List<Vector2> FindPath(Point destination)
         {
-            Vector2 start = new Vector2(size / 2, size / 2);
-            Vector2 end = new Vector2(destination);
+            Vector2 start = GlobalToLocal(playerInfo.Position);
+            Vector2 end = GlobalToLocal(destination);
 
             char[,] charMap = MapToCharArray(size);
-            char[] collisions = { 'l', 'm' };
+            char[] collisions = new char[0]; //{ 'l', 'w' };
 
             List<Vector2> directions = astar.FindPath(start, end, charMap, collisions);
             return directions;
+        }
+
+        Vector2 GlobalToLocal(Point point)
+        {
+            return new Vector2(point.X - map.XMin, point.Y - map.YMin);
+        }
+        Point GlobalToLocalPoint(Point point)
+        {
+            return new Point(point.X - map.XMin, point.Y - map.YMin);
         }
 
         char[,] MapToCharArray(int size)
@@ -105,10 +117,26 @@ namespace LHGames.Helper
             {
                 for (int y = 0; y < size; y++)
                 {
-                    charMap[x, y] = TileToChar(map.GetTileAt(x, y));
+                    charMap[x, y] = TileToChar(map.GetTileAt(x + map.XMin, y + map.YMin));
                 }
             }
+            PrintMap(charMap, true);
+            PrintMap(charMap, false);
+
             return charMap;
+        }
+
+        void PrintMap(char[,] map, bool debug)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    Console.Write(map[x, y] + ((debug) ? "(" + x + "/" + y + ")" : ""));
+                }
+                Console.Write("\n");
+
+            }
         }
 
         char TileToChar(TileContent tile)
@@ -119,10 +147,10 @@ namespace LHGames.Helper
                     return ' ';
                     break;
                 case TileContent.Wall:
-                    return ' ';
+                    return 'w';
                     break;
                 case TileContent.House:
-                    return ' ';
+                    return 'h';
                     break;
                 case TileContent.Lava:
                     return 'l';
@@ -131,10 +159,10 @@ namespace LHGames.Helper
                     return 'm';
                     break;
                 case TileContent.Shop:
-                    return ' ';
+                    return 's';
                     break;
                 case TileContent.Player:
-                    return ' ';
+                    return 'p';
                     break;
             }
             return ' ';
@@ -143,11 +171,23 @@ namespace LHGames.Helper
 
         Point FindPositionOfTile(TileContent tile, int size)
         {
+            List<Tile> location = new List<Tile>();
             foreach (Tile currentTile in map.GetVisibleTiles())
             { 
                 if (currentTile.TileType == tile)
-                    return currentTile.Position;
+                    location.Add(currentTile);
             }
+
+            for (int i = 0; i < location.Count; i++)
+            {
+                //Point point = GlobalToLocalPoint(location[i].Position);
+                List <Vector2> directions = FindPath(location[i].Position);
+                if (directions != null)
+                {
+                    return location[i].Position;
+                }
+            }
+
             return new Point(0, 0);
         }
     }

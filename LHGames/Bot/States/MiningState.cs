@@ -23,13 +23,21 @@ internal class MiningState : State
     protected override string UpdateState()
     {
         //Pas full
-        if(brain.playerInfo.CarriedResources < brain.playerInfo.CarryingCapacity)
+        Console.WriteLine(brain.playerInfo.CarriedResources + "/" + brain.playerInfo.CarryingCapacity);
+        if (brain.playerInfo.CarriedResources < brain.playerInfo.CarryingCapacity)
         {
             return GatherRessource();
         }
         else
         {
-            return ReturnHome();
+            if (Adjacent(brain.playerInfo.HouseLocation))
+            {
+                return "";
+            }
+            else
+            { 
+                return ReturnHome();
+            }
         }
     }
 
@@ -37,7 +45,7 @@ internal class MiningState : State
     {
         if(Adjacent(miningDestination))
         {
-            return AIHelper.CreateCollectAction(miningDestination);
+            return AIHelper.CreateCollectAction(Direction(brain.playerInfo.Position, miningDestination));
         }
         else
         {

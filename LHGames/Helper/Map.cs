@@ -12,10 +12,10 @@ namespace LHGames.Helper
     public class Map
     {
         private Tile[,] Tiles { get; set; }
-        private int XMin { get; set; }
-        private int YMin { get; set; }
-        private int XMax { get; set; }
-        private int YMax { get; set; }
+        public int XMin { get; set; }
+        public int YMin { get; set; }
+        public int XMax { get; set; }
+        public int YMax { get; set; }
 
         /// <summary>
         /// How far your Bot can see.

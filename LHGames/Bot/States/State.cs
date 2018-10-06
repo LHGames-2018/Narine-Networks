@@ -42,9 +42,14 @@ namespace LHGames.Helper
             return (diff.X == 0 && diff.Y == 1) || (diff.X == 1 && diff.Y == 0);
         }
 
-        Point Difference(Point pt1, Point pt2)
+        protected Point Difference(Point pt1, Point pt2)
         {
             return new Point(Math.Abs(pt1.X - pt2.X), Math.Abs(pt1.Y - pt2.Y));
+        }
+       
+        protected Point Direction(Point from, Point to)
+        {
+            return new Point((to.X - from.X), (to.Y - from.Y));
         }
     }
 }
