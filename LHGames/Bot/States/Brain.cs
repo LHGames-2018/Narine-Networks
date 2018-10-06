@@ -32,7 +32,7 @@ namespace LHGames.Helper
             miningState.Init(this);
 
             currentState = miningState;
-            upgradeLevels = new Dictionary<int, int>() { { 1, 10000 }, { 2, 15000 }, { 3, 25000 }, { 4, 50000 }, { 5, 100000 } };
+            upgradeLevels = new Dictionary<int, int>() { { 1, 10000 }, { 2, 15000 }, { 3, 25000 }, { 4, 50000 }, { 5, 100000 }, { 6, int.MaxValue } };
             currentUpgrade = new Dictionary<UpgradeType, int>() { { UpgradeType.AttackPower, 0 }, { UpgradeType.CarryingCapacity, 0 }, { UpgradeType.CollectingSpeed, 0 }, { UpgradeType.Defence, 0 }, { UpgradeType.MaximumHealth, 0 } };
         }
 
@@ -58,7 +58,7 @@ namespace LHGames.Helper
 
         public bool CanUpgrade()
         {
-            if (playerInfo.TotalResources >= upgradeLevels[currentUpgrade[UpgradeType.CollectingSpeed]])
+            if (playerInfo.TotalResources >= upgradeLevels[currentUpgrade[UpgradeType.CollectingSpeed] + 1])
                 return true;
             return false;
         }
