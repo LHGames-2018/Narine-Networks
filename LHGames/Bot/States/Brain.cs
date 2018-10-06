@@ -14,6 +14,7 @@ namespace LHGames.Helper
         UpgradeState upgradeState = new UpgradeState();
         CombatState combatState = new CombatState();
         StealthState stealthState = new StealthState();
+        ReturnHomeState returnHomeState = new ReturnHomeState();
 
         public IEnumerable<IPlayer> visiblePlayers;
         public IPlayer playerInfo;
@@ -77,14 +78,39 @@ namespace LHGames.Helper
             {
                 savedLastState = currentState;
             }
+
+            CheckBestState();
         }
 
         void CheckBestState()
         {
-            if(playerInfo.CarriedResources == playerInfo.CarryingCapacity)
+            if (playerInfo.CarriedResources == playerInfo.CarryingCapacity)
             {
-                
+                SetNewState(returnHomeState);
+                return;
             }
+            if (playerInfo.TotalResources < GetMostRessourcePlayer().TotalResources)
+            {
+                SetNewState(stealthState);
+                return;
+            }
+        }
+
+        IPlayer GetMostRessourcePlayer()
+        {
+            List<IPlayer> players = ToList(visiblePlayers);
+            players.Sort((s1, s2) => s1.TotalResources.CompareTo(s2.TotalResources));
+            return players[players.Count - 1];
+        }
+
+        public static List<TSource> ToList<TSource>(this IEnumerable<TSource> source)
+        {
+            if (source == null)
+            {
+                Console.WriteLine("not working");
+                return null;
+            }
+            return new List<TSource>(source);
         }
 
         public void SetNewState(State states)
