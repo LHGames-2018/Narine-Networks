@@ -30,14 +30,8 @@ internal class MiningState : State
         }
         else
         {
-            if (Adjacent(brain.playerInfo.HouseLocation))
-            {
-                return "";
-            }
-            else
-            { 
-                return ReturnHome();
-            }
+
+            return ReturnHome();
         }
     }
 
