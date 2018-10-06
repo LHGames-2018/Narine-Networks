@@ -42,7 +42,7 @@ namespace LHGames.Helper
             this.playerInfo = playerInfo;
             this.visiblePlayers = visiblePlayers;
             this.map = map;
-            size = map.VisibleDistance * 2;
+            size = map.VisibleDistance * 2 + 1;
             isExitingStates = false;
 
             if(CanUpgrade())
