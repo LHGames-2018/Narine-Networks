@@ -24,6 +24,7 @@ internal class UpgradeState : State
         if (brain.playerInfo.Position == brain.playerInfo.HouseLocation && collectingLevel != 5)
         {
             brain.UpgradeGear(UpgradeType.CollectingSpeed);
+            ExitCurrentState();
             return AIHelper.CreateUpgradeAction(UpgradeType.CollectingSpeed);
         }
         return GoTo(brain.playerInfo.HouseLocation);

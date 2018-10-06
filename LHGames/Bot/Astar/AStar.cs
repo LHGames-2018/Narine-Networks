@@ -36,6 +36,8 @@ class AStarGenerator
                 open2.Remove(currentState);
                 close.Add(currentState);
 
+
+
                 if (goal.GoalSatisfied(currentState))
                 {
                     foundSolution = true;

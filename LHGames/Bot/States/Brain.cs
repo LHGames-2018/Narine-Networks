@@ -12,6 +12,8 @@ namespace LHGames.Helper
 
         MiningState miningState = new MiningState();
         UpgradeState upgradeState = new UpgradeState();
+        CombatState combatState = new CombatState();
+        StealthState stealthState = new StealthState();
 
         public IEnumerable<IPlayer> visiblePlayers;
         public IPlayer playerInfo;
@@ -68,6 +70,20 @@ namespace LHGames.Helper
 
         public void ExitCurrentState(State state)
         {
+            if (currentState != null)
+            {
+                savedLastState = currentState;
+            }
+
+            
+        }
+
+        void CheckBestState()
+        {
+            if(playerInfo.CarriedResources == playerInfo.CarryingCapacity)
+            {
+                
+            }
         }
 
         public void SetNewState(State states)
@@ -117,9 +133,13 @@ namespace LHGames.Helper
             Vector2 end = GlobalToLocal(destination);
 
             char[,] charMap = MapToCharArray(size);
-            char[] collisions = new char[0]; //{ 'l', 'w' };
+            char[] collisions = { 'w' };
 
+            Console.WriteLine(charMap[end.x, end.y]);
+
+            //List<Vector2> directions = astar.FindPath(new Vector2(start.y, start.x), new Vector2(end.y, end.x), charMap, collisions);
             List<Vector2> directions = astar.FindPath(start, end, charMap, collisions);
+
             return directions;
         }
 
@@ -139,7 +159,7 @@ namespace LHGames.Helper
             {
                 for (int y = 0; y < size; y++)
                 {
-                    charMap[x, y] = TileToChar(map.GetTileAt(x + map.XMin, y + map.YMin));
+                    charMap[y, x] = TileToChar(map.GetTileAt(x + map.XMin, y + map.YMin));
                 }
             }
             PrintMap(charMap, true);
@@ -189,7 +209,6 @@ namespace LHGames.Helper
             }
             return ' ';
         }
-
 
         Point FindPositionOfTile(TileContent tile, int size)
         {
