@@ -104,7 +104,7 @@ namespace LHGames.Helper
             return players[players.Count - 1];
         }
 
-        public static List<TSource> ToList<TSource>(this IEnumerable<TSource> source)
+        public List<TSource> ToList<TSource>(IEnumerable<TSource> source)
         {
             if (source == null)
             {
