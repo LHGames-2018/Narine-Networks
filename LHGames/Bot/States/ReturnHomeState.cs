@@ -13,7 +13,12 @@ internal class ReturnHomeState : State
 
     protected override string UpdateState()
     {
-        return brain.GetDirection(brain.playerInfo.HouseLocation);
+        if(brain.playerInfo.Position != brain.playerInfo.HouseLocation)
+        {
+            return brain.GetDirection(brain.playerInfo.HouseLocation);
+        }
+        ExitCurrentState();
+        return "";
     }
 }
 
