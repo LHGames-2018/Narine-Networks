@@ -30,7 +30,8 @@ internal class CombatState : State
         }
         else
         {
-            return ReturnHome();
+            ExitCurrentState();
+            return "";
         }
     }
 

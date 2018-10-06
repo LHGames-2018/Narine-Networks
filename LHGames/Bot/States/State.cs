@@ -23,7 +23,7 @@ namespace LHGames.Helper
 
         protected virtual void ExitCurrentState()
         {
-
+            brain.ExitCurrentState(this);
         }
 
         protected string GoTo(Point destination)
