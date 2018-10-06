@@ -28,6 +28,9 @@ namespace LHGames.Helper
         AStar.GridAStar astar = new AStar.GridAStar(false);
         GameInfo gameInfo;
 
+        char[,] charMap; //= MapToCharArray(size);
+
+
         public Brain()
         {
             //init all states
@@ -47,6 +50,9 @@ namespace LHGames.Helper
             size = map.VisibleDistance * 2 + 1;
             isExitingStates = false;
             UpdateUpgrades();
+
+            char[,] charMap = MapToCharArray(size);
+            PrintMap(charMap, false);
 
             if (CanUpgrade())
             {
@@ -196,8 +202,8 @@ namespace LHGames.Helper
                     charMap[y, x] = TileToChar(map.GetTileAt(x + map.XMin, y + map.YMin));
                 }
             }
-            PrintMap(charMap, true);
-            PrintMap(charMap, false);
+            //PrintMap(charMap, true);
+            //PrintMap(charMap, false);
 
             return charMap;
         }
