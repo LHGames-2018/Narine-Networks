@@ -112,6 +112,8 @@ namespace LHGames.Helper
                 SetNewState(stealthState);
                 return;
             }
+
+            SetNewState(miningState);
         }
 
         IPlayer GetMostRessourcePlayer()
