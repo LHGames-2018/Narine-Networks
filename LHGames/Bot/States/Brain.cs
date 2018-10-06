@@ -113,6 +113,9 @@ namespace LHGames.Helper
                 return;
             }
 
+            Point position = FindPositionOfTile(TileContent.Resource, size);
+            miningState.SetMineral(position);
+
             SetNewState(miningState);
         }
 
