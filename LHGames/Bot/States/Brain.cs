@@ -207,7 +207,21 @@ namespace LHGames.Helper
             charMap[end.y, end.x] = '@';
 
             List<Vector2> directions = astar.FindPath(start, end, charMap, collisions);
-
+            
+            if(directions == null)
+            {
+                directions = new List<Vector2>();
+                Random r = new Random();
+                if(r.Next(0,2) == 1)
+                {
+                    directions.Add(new Vector2(r.Next(-1, 2), 0));
+                }
+                else
+                {
+                    directions.Add(new Vector2(0, r.Next(-1, 2)));
+                }
+                
+            }
             return directions;
         }
 
