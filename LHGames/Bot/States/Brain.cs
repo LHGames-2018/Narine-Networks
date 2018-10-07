@@ -61,15 +61,15 @@ namespace LHGames.Helper
             PrintMap(charMap, false);
             Console.WriteLine(playerInfo.TotalResources);
 
-            if (CanUpgrade())
-            {
-                SetNewState(upgradeState);
-            }
-            else
-            {
-                CheckBestState();
-            }
-
+            //if (CanUpgrade())
+            //{
+            //    SetNewState(upgradeState);
+            //}
+            //else
+            //{
+            //    CheckBestState();
+            //}
+            CheckBestState();
             return currentState.Update();
         }
 
