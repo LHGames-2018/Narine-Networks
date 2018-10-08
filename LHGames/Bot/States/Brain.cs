@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using LHGames.Helper;
 using AStar;
 
 namespace LHGames.Helper
@@ -26,11 +25,11 @@ namespace LHGames.Helper
         Dictionary<int, int> upgradeLevels;
         Dictionary<UpgradeType, int> currentUpgrade;
 
-        AStar.GridAStar astar = new AStar.GridAStar(true);
+        GridAStar<TileContent> astar = new AStar.GridAStar<TileContent>(false);
         GameInfo gameInfo;
 
-        char[,] charMap; //= MapToCharArray(size);
-
+        //char[,] charMap; //= MapToCharArray(size);
+        TileContent[,] tileMap;
 
         public Brain()
         {
@@ -57,8 +56,7 @@ namespace LHGames.Helper
             isExitingStates = false;
             UpdateUpgrades();
 
-            char[,] charMap = MapToCharArray(size);
-            PrintMap(charMap, false);
+            //char[,] charMap = MapToCharArray(size);
             Console.WriteLine(playerInfo.TotalResources);
             //return exploreState.Update();
 
@@ -70,6 +68,7 @@ namespace LHGames.Helper
             {
                 CheckBestState();
             }
+            PrintMap(false);
 
             return currentState.Update();
         }
@@ -168,8 +167,14 @@ namespace LHGames.Helper
         public string GetDirection(Point destination)
         {
             List<Vector2> directions = FindPath(destination);
-            //null check
 
+            if (directions == null || directions.Count == 0)
+                return AIHelper.CreateMoveAction(GetRandomDirection());
+
+            for (int i = 0; i < directions.Count; i++)
+            {
+                Console.WriteLine(directions[i]);
+            }
             Console.WriteLine("Direction count " + directions.Count);
             Point point = new Point(directions[0].x, directions[0].y);
             return AIHelper.CreateMoveAction(point);
@@ -180,12 +185,14 @@ namespace LHGames.Helper
             Vector2 start = GlobalToLocal(playerInfo.Position);
             Vector2 end = GlobalToLocal(destination);
 
-            char[,] charMap = MapToCharArray(size);
-            char[] collisions = { 'w', 'l', 'm'};
+            //char[,] charMap = MapToCharArray(size);
+            tileMap = MapToTileContentArray(size);
+            Console.WriteLine("Destination Grid = " + tileMap[end.x, end.y]);
+            TileContent[] collisions = { TileContent.Lava, TileContent.Resource, TileContent.Wall};
 
-            charMap[end.y, end.x] = '@';
+            tileMap[end.x, end.y] = TileContent.Empty;
 
-            List<Vector2> directions = astar.FindPath(start, end, charMap, collisions);
+            List<Vector2> directions = astar.FindPath(start, end, tileMap, collisions);
 
             return directions;
         }
@@ -199,6 +206,21 @@ namespace LHGames.Helper
             return new Point(point.X - map.XMin, point.Y - map.YMin);
         }
 
+        TileContent[,] MapToTileContentArray(int size)
+        {
+            TileContent[,] tileMap = new TileContent[size, size];
+            for (int x = 0; x < size; x++)
+            {
+                for (int y = 0; y < size; y++)
+                {
+                    tileMap[x, y] = map.Tiles[x, y].TileType;
+                }
+            }
+            //PrintMap(charMap, true);
+            //PrintMap(charMap, false);
+
+            return tileMap;
+        }
         char[,] MapToCharArray(int size)
         {
             char[,] charMap = new char[size, size];
@@ -206,7 +228,7 @@ namespace LHGames.Helper
             {
                 for (int y = 0; y < size; y++)
                 {
-                    charMap[y, x] = TileToChar(map.GetTileAt(x + map.XMin, y + map.YMin));
+                    charMap[x, y] = TileToChar(map.GetTileAt(x + map.XMin, y + map.YMin));
                 }
             }
             //PrintMap(charMap, true);
@@ -215,13 +237,14 @@ namespace LHGames.Helper
             return charMap;
         }
 
-        void PrintMap(char[,] map, bool debug)
+        void PrintMap(bool debug)
         {
+
             for (int y = 0; y < size; y++)
             {
                 for (int x = 0; x < size; x++)
                 {
-                    Console.Write(map[x, y] + ((debug) ? "(" + x + "/" + y + ")" : ""));
+                    Console.Write(TileToChar(map.Tiles[x, y].TileType)+ " " + ((debug) ? "(" + x + "/" + y + ")" : ""));
                 }
                 Console.Write("\n");
 
@@ -293,10 +316,23 @@ namespace LHGames.Helper
             {
                 return location[index].Position;
             }
-            int rndMov = new Random().Next(-1, 2);
-            int rndMov2 = new Random().Next(-1, 2);
 
-            return new Point(playerInfo.Position.X + rndMov, playerInfo.Position.Y + rndMov2);
+            return GetRandomPositionNearPlayer();
+        }
+
+        Point GetRandomDirection()
+        {
+            int rndMov = new Random().Next(-1, 2);
+            int rndMov2 = 0;
+            if(rndMov == 0)
+                rndMov2 = new Random().Next(-1, 2);
+
+            return new Point(rndMov, rndMov2);
+        }
+        Point GetRandomPositionNearPlayer()
+        {
+            Point randomDir = GetRandomDirection();
+            return new Point(playerInfo.Position.X + randomDir.X, playerInfo.Position.Y + randomDir.Y);
         }
     }
 }

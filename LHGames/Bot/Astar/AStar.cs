@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Priority_Queue;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,26 +15,35 @@ class AStarGenerator
         {
             heuristic.InitialiseGoal(goal);
 
-            List<State> open = new List<State>();
+           //List<State> open = new List<State>();
+            //SortedSet<State> open = new SortedSet<State>();
+            // SortedDictionary<State, State> open = new SortedDictionary<State, State>();
+
+            SimplePriorityQueue<State> open = new SimplePriorityQueue<State>();
             HashSet<State> open2 = new HashSet<State>();
             HashSet<State> close = new HashSet<State>();
 
             State currentState = initialState;
 
-            open.Add(currentState);
+            //open.Add(currentState, 0);
+            open.Enqueue(currentState, 0);
             open2.Add(currentState);
+            //open.Add(currentState, currentState);
+
             int statesCount = 0;
             bool foundSolution = false;
 
             while(open.Count > 0)
             {
-                currentState = open.First();
-                open.Remove(currentState);
+                currentState = open.Dequeue();
+                open2.Remove(currentState);
 
-                if(showDetails)
+                //open.First
+                //open.Remove(currentState);
+
+                if (showDetails)
                     Console.WriteLine(currentState.ToString());
 
-                open2.Remove(currentState);
                 close.Add(currentState);
 
                 statesCount++;
@@ -50,8 +60,6 @@ class AStarGenerator
 
                 VisitNextStates(heuristic, open, open2, close, currentState, nextStates, nextOperations);
             }
-
-
             
             if (foundSolution)
             {
@@ -63,7 +71,7 @@ class AStarGenerator
             }
         }
 
-        private static void VisitNextStates(Heuristic heuristic, List<State> open, HashSet<State> open2, HashSet<State> close, State currentState, List<State> nextStates, List<Operation> nextActions)
+        private static void VisitNextStates(Heuristic heuristic, SimplePriorityQueue<State> open, HashSet<State> open2, HashSet<State> close, State currentState, List<State> nextStates, List<Operation> nextActions)
         {
             for (int i = 0; i < nextStates.Count; i++)
             {
@@ -73,28 +81,40 @@ class AStarGenerator
                 if (!close.Contains(nextState))
                 {
                     nextState.parent = currentState;
-                    if (open.Contains(nextState))
+                    if (open2.Contains(nextState))
                     {
                         //Si existe deja, update les stats
 
-                        //double newg = currentState.g + nextAction.cost;
-                        //double newf = newg + heuristic.EstimateCost(nextState);
-                        //if (newf < nextState.f)
-                        //{
-                        //    open.Remove(nextState);
-                        //    nextState.g = newg;
-                        //    nextState.f = newf;
-                        //    open.Add(nextState);
-                        //}
+                        double newg = currentState.g + nextAction.cost;
+                        double newf = newg + heuristic.EstimateCost(nextState);
+                        if (newf < nextState.f)
+                        {
+                            //open.Remove(nextState);
+                            nextState.g = newg;
+                            nextState.f = newf;
+                            //open.Add(nextState);
+                            //open.
+                            open.UpdatePriority(nextState, (float)nextState.f);
+
+                            if (open.Count != open2.Count)
+                            {
+                                int debug = 5;
+                            }
+                        }
                     }
                     else
                     {
                         //Jamais été visité
                         nextState.g = currentState.g + nextAction.cost;
                         nextState.f = nextState.g + heuristic.EstimateCost(nextState);
-                        open.Add(nextState);
+                        // open.Add(nextState);
                         open2.Add(nextState);
+                        open.Enqueue(nextState, (float)nextState.f);
 
+                        if (open.Count != open2.Count)
+                        {
+                            int debug = 5;
+                        }
                     }
                 }
             }
@@ -128,5 +148,5 @@ class AStarGenerator
             actions.Reverse();
             return actions;
         }
-}
+    }
 }
